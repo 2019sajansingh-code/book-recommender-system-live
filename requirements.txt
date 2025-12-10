@@ -4,3 +4,6 @@ pandas
 gunicorn
 fuzzywuzzy
 python-levenshtein
+Flask-SQLAlchemy
+Flask-Login
+Werkzeug
