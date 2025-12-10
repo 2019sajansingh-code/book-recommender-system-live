@@ -56,44 +56,41 @@ def recommend():
     try:
         index = np.where(pt.index == user_input)[0][0]
         similar_items = sorted(list(enumerate(similarity_scores[index])), key=lambda x: x[1], reverse=True)[1:5]
-    except IndexError:
-        # This shouldn't happen if best_match comes from pt.index.tolist()
-        return render_template('recommend.html', error_message="Internal indexing error after fuzzy match.")
 
 
-    data = []
-    for i in similar_items:
-        item = []
-        temp_df = books[books['Book-Title'] == pt.index[i[0]]]
-        item.extend(list(temp_df.drop_duplicates('Book-Title')['Book-Title'].values))
-        item.extend(list(temp_df.drop_duplicates('Book-Title')['Book-Author'].values))
-        item.extend(list(temp_df.drop_duplicates('Book-Title')['Image-URL-M'].values))
-        try:
-            isbn = list(temp_df['ISBN'].values)[0]
-            book_title = list(temp_df['Book-Title'].values)[0]
+        data = []
+        for i in similar_items:
+           item = []
+           temp_df = books[books['Book-Title'] == pt.index[i[0]]]
+           item.extend(list(temp_df.drop_duplicates('Book-Title')['Book-Title'].values))
+           item.extend(list(temp_df.drop_duplicates('Book-Title')['Book-Author'].values))
+           item.extend(list(temp_df.drop_duplicates('Book-Title')['Image-URL-M'].values))
+           try:
+             isbn = list(temp_df['ISBN'].values)[0]
+             book_title = list(temp_df['Book-Title'].values)[0]
 
             # Purchase Link (Option A)
-            purchase_link = f"https://www.amazon.com/s?k={isbn}"
+             purchase_link = f"https://www.amazon.com/s?k={isbn}"
 
             # Free Ebook Search Link (Option B - Universal Search)
             # Yeh link user ko seedhe search result page par le jayega
-            free_link = f"https://www.gutenberg.org/ebooks/search/?query={book_title.replace(' ', '+')}"
+             free_link = f"https://www.gutenberg.org/ebooks/search/?query={book_title.replace(' ', '+')}"
 
-            item.extend([purchase_link])
-            item.extend([free_link])
+             item.extend([purchase_link])
+             item.extend([free_link])
 
-        except:
-            item.extend(["#", "#"])
-        data.append(item)
+           except:
+             item.extend(["#", "#"])
+           data.append(item)
 
-    print(data)
 
-    return render_template('recommend.html', data=data, search_term=best_match)
+
+        return render_template('recommend.html', data=data, search_term=best_match)
 
     except IndexError:
-    # This catches if the best_match title somehow couldn't be indexed (very rare system error)
-    return render_template('recommend.html', data=[],
-                           error_message="Internal indexing error: Please try another book title.")
+
+      return render_template('recommend.html', data=data,search_term=best_match)
+
 if __name__ == '__main__':
     app.run(debug=True)
 
