@@ -33,28 +33,28 @@
             </div>
 
             {% if data %}
-    <div class="row">
-        {% for item in data %}
-        <div class="col-md-3" style="margin-bottom: 20px;">
-            <div class="card shadow">
-                <img class="card-img-top" src="{{ item[2] }}" alt="Book Image">
-                <div class="card-body">
-                    <h5 class="card-title">{{ item[0] }}</h5>
-                    <p class="card-text">{{ item[1] }}</p>
+               <div class="row">
+                  {% for item in data %}
+                  <div class="col-md-3" style="margin-bottom: 20px;">
+                     <div class="card shadow">
+                        <img class="card-img-top" src="{{ item[2] }}" alt="Book Image">
+                        <div class="card-body">
+                          <h5 class="card-title">{{ item[0] }}</h5>
+                          <p class="card-text">{{ item[1] }}</p>
 
-                    <a href="{{ item[3] }}" target="_blank" class="btn btn-warning btn-sm mt-2">
-                        Buy Now (Amazon)
-                    </a>
+                          <a href="{{ item[3] }}" target="_blank" class="btn btn-warning btn-sm mt-2">
+                            Buy Now (Amazon)
+                          </a>
 
-                    <a href="{{ item[4] }}" target="_blank" class="btn btn-success btn-sm mt-2">
-                        Find Free Ebook
-                    </a>
-                    </div>
-            </div>
-        </div>
-        {% endfor %}
-    </div>
-{% endif %}
+                          <a href="{{ item[4] }}" target="_blank" class="btn btn-success btn-sm mt-2">
+                           Find Free Ebook
+                          </a>
+                          </div>
+                     </div>
+                  </div>
+                  {% endfor %}
+               </div>
+            {% endif %}
 
 
 
