@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>User Profile</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <style>
+        body { background-color: #f4f4f4; padding-top: 70px; }
+        .profile-card { max-width: 600px; margin: 0 auto; background: white; padding: 40px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .welcome-heading { color: #333; margin-bottom: 20px; }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="{{ url_for('index') }}">Book Recommender System</a>
+            </div>
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="{{ url_for('recommend_ui') }}">Recommend</a></li>
+                <li class="active"><a href="{{ url_for('profile') }}">Profile</a></li>
+                <li><a href="{{ url_for('logout') }}" class="btn btn-danger navbar-btn" style="margin-left: 10px;">Logout</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="profile-card">
+            <h1 class="welcome-heading">Welcome, {{ user.username }}!</h1>
+            <p class="lead">This is your personal profile dashboard.</p>
+            <hr>
+
+            <dl class="dl-horizontal">
+                <dt>User ID:</dt>
+                <dd>{{ user.id }}</dd>
+
+                <dt>Username:</dt>
+                <dd>{{ user.username }}</dd>
+
+                <dt>Status:</dt>
+                <dd><span class="label label-success">Logged In</span></dd>
+            </dl>
+
+            <p style="margin-top: 30px;">
+                You can now use all personalized features of the Book Recommender System.
+            </p>
+            <a href="{{ url_for('recommend_ui') }}" class="btn btn-primary">Go to Recommendations</a>
+        </div>
+    </div>
+</body>
+</html>

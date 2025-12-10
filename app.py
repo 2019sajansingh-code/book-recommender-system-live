@@ -100,7 +100,12 @@ def logout():
     flash('You have been logged out.', 'info')
     return redirect(url_for('login'))
 
-
+# --- 4. PROFILE ROUTE ---
+@app.route('/profile')
+@login_required # Sirf logged-in user hi dekh sakte hain
+def profile():
+    # current_user object Flask-Login se aata hai, jismein user ka data hota hai
+    return render_template('profile.html', user=current_user)
 # 4. POPULAR BOOKS ROUTE (NOW PROTECTED)
 @app.route('/')
 @login_required  # Only authenticated users can see this

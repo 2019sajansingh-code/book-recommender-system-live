@@ -19,11 +19,11 @@
             background-color: #2c2c2c;
             color: #f8f8f8;
             border: 1px solid #444;
-            height: 100%; /* Ensure uniform height for all cards in the row */
+            height: 100%;
         }
         .card-img-top {
             width: 100%;
-            height: 250px; /* Fixed height for image */
+            height: 250px;
             object-fit: cover;
         }
         .card-body {
@@ -33,28 +33,36 @@
             background-color: #28a745;
             border-color: #28a745;
             width: 100%;
+            margin-top: 5px;
         }
         .btn-warning {
             background-color: #ffc107;
             border-color: #ffc107;
             width: 100%;
-            margin-top: 5px; /* Spacing between buttons */
         }
     </style>
 </head>
 <body>
+
     <nav class="navbar navbar-inverse navbar-fixed-top">
         <div class="container">
             <div class="navbar-header">
-                <a class="navbar-brand" href="/">Book Recommender System</a>
+                <a class="navbar-brand" href="{{ url_for('index') }}">Book Recommender System</a>
             </div>
             <ul class="nav navbar-nav">
-                <li><a href="/">Home (Top 50)</a></li>
-                <li class="active"><a href="/recommend">Recommend Books</a></li>
+                <li class="{% if request.endpoint == 'index' %}active{% endif %}"><a href="{{ url_for('index') }}">Top 50 Books</a></li>
+                <li class="{% if request.endpoint == 'recommend_ui' %}active{% endif %}"><a href="{{ url_for('recommend_ui') }}">Recommend Books</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                {% if current_user.is_authenticated %}
+                    <li class="{% if request.endpoint == 'profile' %}active{% endif %}"><a href="{{ url_for('profile') }}">Profile</a></li>
+                    <li><a href="{{ url_for('logout') }}" class="btn btn-danger navbar-btn" style="margin-left: 10px;">Logout</a></li>
+                {% else %}
+                    <li><a href="{{ url_for('login') }}">Login</a></li>
+                {% endif %}
             </ul>
         </div>
     </nav>
-
     <div class="container">
 
         <div class="row" style="margin-bottom: 30px;">
