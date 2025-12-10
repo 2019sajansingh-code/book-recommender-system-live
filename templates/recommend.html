@@ -2,66 +2,104 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Book Recommender System</title>
-    <!-- Latest compiled and minified CSS -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-</head>
-<style>
-    .text-white{
-        color:white
-    }
-</style>
-<body style="background-color:black">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Recommender - Recommendations</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 
-    <nav class="navbar" style="background-color:#00a65a">
-        <a class="navbar-brand">My Book recommender</a>
-        <ul class="nav navbar-nav">
-            <li><a href="/">Home</a></li>
-            <li><a href="/recommend">Recommend</a></li>
-            <li><a>Contact</a></li>
-        </ul>
+    <style>
+        body {
+            background-color: black;
+            color: #f8f8f8;
+            padding-top: 70px; /* Space for the navbar */
+        }
+        .container {
+            max-width: 1200px;
+        }
+        .card {
+            background-color: #2c2c2c;
+            color: #f8f8f8;
+            border: 1px solid #444;
+            height: 100%; /* Ensure uniform height for all cards in the row */
+        }
+        .card-img-top {
+            width: 100%;
+            height: 250px; /* Fixed height for image */
+            object-fit: cover;
+        }
+        .card-body {
+            padding: 15px;
+        }
+        .btn-success {
+            background-color: #28a745;
+            border-color: #28a745;
+            width: 100%;
+        }
+        .btn-warning {
+            background-color: #ffc107;
+            border-color: #ffc107;
+            width: 100%;
+            margin-top: 5px; /* Spacing between buttons */
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="/">Book Recommender System</a>
+            </div>
+            <ul class="nav navbar-nav">
+                <li><a href="/">Home (Top 50)</a></li>
+                <li class="active"><a href="/recommend">Recommend Books</a></li>
+            </ul>
+        </div>
     </nav>
 
     <div class="container">
-        <div class="row">
+
+        <div class="row" style="margin-bottom: 30px;">
             <div class="col-md-12">
-                <h1 class="text-white" style="font-size:50px">Recommend Books</h1>
-                <form action="/recommend_books" method="post">
-                    <input name="user_input" type="text" class="form-control"><br>
-                    <input type="submit" class="btn btn-lg btn-warning">
+                <h1 style="color: #ffc107;">Find Similar Books</h1>
+                <form action="/recommend_books" method="post" style="display: flex; gap: 10px;">
+                    <input name="user_input" type="text" class="form-control" placeholder="Enter a book title (e.g., Harry Potter)">
+                    <button type="submit" class="btn btn-warning" style="min-width: 150px;">Recommend</button>
                 </form>
             </div>
-
-            {% if data %}
-               <div class="row">
-                  {% for item in data %}
-                  <div class="col-md-3" style="margin-bottom: 20px;">
-                     <div class="card shadow">
-                        <img class="card-img-top" src="{{ item[2] }}" alt="Book Image">
-                        <div class="card-body">
-                          <h5 class="card-title">{{ item[0] }}</h5>
-                          <p class="card-text">{{ item[1] }}</p>
-
-                          <a href="{{ item[3] }}" target="_blank" class="btn btn-warning btn-sm mt-2">
-                            Buy Now (Amazon)
-                          </a>
-
-                          <a href="{{ item[4] }}" target="_blank" class="btn btn-success btn-sm mt-2">
-                           Find Free Ebook
-                          </a>
-                          </div>
-                     </div>
-                  </div>
-                  {% endfor %}
-               </div>
-            {% endif %}
-
-
-
-
-
         </div>
-    </div>
 
-</body>
+        {% if error_message %}
+            <div class="alert alert-danger" role="alert">
+                <strong>Error:</strong> {{ error_message }}
+            </div>
+        {% endif %}
+
+        {% if data and search_term %}
+            <h3 style="margin-bottom: 25px;">Recommendations for: <span style="color: lightgreen;">{{ search_term }}</span></h3>
+        {% endif %}
+
+        {% if data %}
+            <div class="row">
+                {% for item in data %}
+                <div class="col-md-3" style="margin-bottom: 20px;">
+                    <div class="card shadow">
+                        <img class="card-img-top" src="{{ item[2] }}" alt="{{ item[0] }}">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ item[0] }}</h5>
+                            <p class="card-text text-muted">By: {{ item[1] }}</p>
+
+                            <a href="{{ item[3] }}" target="_blank" class="btn btn-warning btn-sm mt-2">
+                                Buy Now (Amazon)
+                            </a>
+
+                            <a href="{{ item[4] }}" target="_blank" class="btn btn-success btn-sm mt-2">
+                                Find Free Ebook
+                            </a>
+                            </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+    </div> </body>
 </html>
