@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Shopping Cart</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <style>
+        body { background-color: black; color: white; padding-top: 70px; }
+        .cart-item { background: #2c2c2c; border: 1px solid #444; margin-bottom: 15px; padding: 15px; border-radius: 5px; }
+        .item-image { max-width: 80px; height: 120px; object-fit: cover; margin-right: 15px; }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="{{ url_for('index') }}">Book Recommender System</a>
+            </div>
+            <ul class="nav navbar-nav">
+                <li><a href="{{ url_for('index') }}">Top 50 Books</a></li>
+                <li><a href="{{ url_for('recommend_ui') }}">Recommend Books</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li class="active"><a href="{{ url_for('view_cart') }}">Cart ({{ items|length }})</a></li>
+                <li><a href="{{ url_for('profile') }}">Profile</a></li>
+                <li><a href="{{ url_for('logout') }}" class="btn btn-danger navbar-btn" style="margin-left: 10px;">Logout</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container">
+        <h1 style="color: #ffc107;">Your Shopping Cart</h1>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                <div class="alert alert-{{ category }}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        {% if items %}
+            <p class="lead">Total Items: <strong>{{ items|length }}</strong></p>
+            <a href="{{ checkout_link }}" target="_blank" class="btn btn-success btn-lg" style="margin-bottom: 20px;">
+                Proceed to Checkout (Amazon)
+            </a>
+
+            {% for item in items %}
+            <div class="cart-item row">
+                <div class="col-xs-2">
+                    <img src="{{ item.image }}" alt="{{ item.title }}" class="item-image img-responsive">
+                </div>
+                <div class="col-xs-7">
+                    <h4>{{ item.title }}</h4>
+                    <p class="text-muted">By: {{ item.author }}</p>
+                    <p>ISBN: {{ item.isbn }}</p>
+                </div>
+                <div class="col-xs-3 text-right">
+                    <form method="POST" action="{{ url_for('remove_from_cart', isbn=item.isbn) }}">
+                        <button type="submit" class="btn btn-danger btn-sm">Remove</button>
+                    </form>
+                </div>
+            </div>
+            {% endfor %}
+
+        {% else %}
+            <div class="alert alert-info">
+                Your cart is currently empty.
+            </div>
+            <a href="{{ url_for('recommend_ui') }}" class="btn btn-primary">Continue Shopping</a>
+        {% endif %}
+
+    </div>
+</body>
+</html>
